@@ -32,7 +32,7 @@ class Course(models.Model):
         return self.course_name
 
     class Meta:
-        ordering = ['course_consume']
+        ordering = ['-id']
         verbose_name = "慕课"
         verbose_name_plural = "慕课课程"
 
@@ -42,4 +42,5 @@ class CourseAdmin(admin.ModelAdmin):
 
 
 class UserProfile(models.Model):
-    pass
+    course_user = models.ManyToManyField(User, null=True, related_name="course_user")
+    users_course = models.ManyToManyField(Course, related_name="users_course")

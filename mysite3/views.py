@@ -37,4 +37,3 @@ def register(request):
     else:
         form = UserCreationForm()
     return render_to_response('register.html', locals(), context_instance=RequestContext(request))
-
