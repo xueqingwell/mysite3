@@ -12,5 +12,11 @@
 {{ md.course_consume }}
 {{ md.get_course_index_display }}
 {{ md.course_description }}
+<br>
+<a href="{% url 'course_add' id=md.id %}">添加课程</a>
+<br>
+<a href="{% url 'course_delete' id=md.id %}">退选课程</a>
+<br>
+<a href="{% url 'show_who_choose_this_class' id=md.id%}">查看选课同学</a>
 </body>
 </html>

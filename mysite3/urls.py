@@ -25,4 +25,6 @@ urlpatterns = [
     url(r'^accounts/logout/$', logout, {'template_name': 'index.html'}, name='logout'),
     url(r'^$', index, name='index'),
     url(r'^mooc/', include('mooc.urls')),
+    url(r'^index/show', 'mooc.views.show_my_course', name='show_my_course'),
+
 ]

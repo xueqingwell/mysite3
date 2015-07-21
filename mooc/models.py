@@ -27,6 +27,7 @@ class Course(models.Model):
     course_subject = models.CharField(max_length=2, choices=SUBJECT_CHOICES, verbose_name="科目")
     course_description = models.TextField(max_length=200, verbose_name="课程简介")
     course_consume = models.IntegerField(verbose_name="周学时")
+    course_choose = models.ManyToManyField(User, blank=True)
 
     def __unicode__(self):
         return self.course_name
@@ -41,6 +42,17 @@ class CourseAdmin(admin.ModelAdmin):
     list_display = ['course_name', 'course_subject']
 
 
-class UserProfile(models.Model):
-    course_user = models.ManyToManyField(User, null=True, related_name="course_user")
-    users_course = models.ManyToManyField(Course, related_name="users_course")
+# class UserProfile(models.Model):
+#     course_user = models.ManyToManyField(User, null=True, related_name="course_user")
+#     users_course = models.ManyToManyField(Course, related_name="users_course")
+
+# class CourseUse(models.Model):
+#     User = models.ForeignKey(User)
+#     Course = models.ForeignKey(Course)
+#
+#     def __unicode__(self):
+#         return self.Course.course_name
+#
+#     class Meta:
+#         verbose_name = "选课记录"
+#         verbose_name_plural = verbose_name
