@@ -19,7 +19,7 @@ from views import index, register
 from django.contrib.auth.views import login, logout
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^index/$', index, name='index'),    # #########################
+    url(r'^index/$', index, name='index'),
     url(r'^accounts/register/$', register, name='register'),
     url(r'^accounts/login/$', login, {'template_name': 'login.html'}, name='login'),
     url(r'^accounts/logout/$', logout, {'template_name': 'index.html'}, name='logout'),

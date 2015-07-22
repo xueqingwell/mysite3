@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
 from mooc.models import Course
-from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.template import RequestContext
-from django import forms
 # Create your views here.
 
 
@@ -24,39 +22,20 @@ def mooc_detail(request, id):
         raise Http404
     return render_to_response('mooc_detail.html', {'md': md})
 
-#
-# @login_required
-# def course_setting(request, id, action="add"):
-#     course_chose_to_modify = get_object_or_404(CourseUse, id=str(id))
-#     go = HttpResponse("success")
-#     if action == "add":
-#         course_chose_to_modify.save()
-#         messages.success(request, "tian_jia_cheng_gong")
-#     return HttpResponse("sddsdd")
-# class CourseSettingForm(forms.Form):
-#     userid = forms.IntegerField(label='userid')
-#     classid = forms.IntegerField(label='classid')
-#
-#
-# @login_required
-# def course_add(request, id):
-#     if request.method == 'POST':
-#         course_settting_user = request.user.id
-#     else:
-#         course_settting_user = None
-#     return render_to_response('mooc_detail.html', {'csu': course_settting_user}, content_type=RequestContext(request))
-
 
 @login_required
 def course_add(request, id):
     try:
         user = User.objects.get(id=request.user.id)
         course = Course.objects.get(id=id)
-        course.course_choose.add(user)
-        course.save()
-        messages.success(request, "选课成功")
+        verify = User.objects.filter(course__id=id, id=request.user.id)
+        if verify:
+            messages.error(request, '已经选了')
+        else:
+            course.course_choose.add(user)
+            course.save()
+            messages.success(request, "选课成功")
         return HttpResponseRedirect('/index/')
-        # return HttpResponse("success")
     except Course.DoesNotExist:
         raise Http404
 
@@ -66,9 +45,13 @@ def course_delete(request, id):
     try:
         user = User.objects.get(id=request.user.id)
         course = Course.objects.get(id=id)
-        course.course_choose.remove(user)
-        course.save()
-        messages.success(request, "退课成功")
+        verify = User.objects.filter(course__id=id, id=request.user.id)
+        if not verify:
+            messages.error(request, '还没选这门课')
+        else:
+            course.course_choose.remove(user)
+            course.save()
+            messages.success(request, "退课成功")
         return HttpResponseRedirect('/index/')
     except Course.DoesNotExist:
         raise Http404
@@ -77,8 +60,6 @@ def course_delete(request, id):
 @login_required
 def show_my_course(request):
     user = User.objects.get(id=request.user.id)
-    # course = Course.objects.all()
-    # all_course = Course.objects.all()
     my_course = user.course_set.all()
     return render_to_response('mooc_select_show.html', {'my_course': my_course})
 

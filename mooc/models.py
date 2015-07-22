@@ -40,19 +40,3 @@ class Course(models.Model):
 
 class CourseAdmin(admin.ModelAdmin):
     list_display = ['course_name', 'course_subject']
-
-
-# class UserProfile(models.Model):
-#     course_user = models.ManyToManyField(User, null=True, related_name="course_user")
-#     users_course = models.ManyToManyField(Course, related_name="users_course")
-
-# class CourseUse(models.Model):
-#     User = models.ForeignKey(User)
-#     Course = models.ForeignKey(Course)
-#
-#     def __unicode__(self):
-#         return self.Course.course_name
-#
-#     class Meta:
-#         verbose_name = "选课记录"
-#         verbose_name_plural = verbose_name
